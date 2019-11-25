@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <div class="center">
+                <img src="try.jpg" class="imgs" style="height:50px; width:60px" id="game" onclick="getPosition(this)">
+                <img src="try.jpg" class="obs" style="height:50px; width:60px" id="obstacle" onclick="getPositionObs(this)">
+                <p id="result"></p>
+            </div>
+        </div>
+        <script>
+            var fix=50;
+            //position of player
+            var x1,y1,x2,y2;
+            function getPosition(element){
+                var rect = element.getBoundingClientRect();
+                x1 = rect.x;
+                y1 = rect.y;
+            }
+            function getPositionObs(element){
+                var rect = element.getBoundingClientRect();
+                x2 = rect.x;
+                y2 = rect.y;
+            }
+            if(x1==x2||y1==y2){
+                document.getElementById("result").innerHTML="Game Over";
+            }else{
+                //makes obstacle move
+                var elem = document.getElementById("obstacle");
+                var pos = 60;
+                var id = setInterval(frameobs, 55);
+                function frameobs() {
+                    pos--;
+                    elem.style.left = pos + '%';
+                    if(pos<=20){
+                        pos=60;
+                    }
+                }
+                //on pressing space jumps
+                document.onkeydown = function(event){
+                        var key_press=String.fromCharCode(event.keyCode);
+                        var key_code=event.keyCode;
+                        console.log(key_code);
+                        if(key_code=="32"||key_code=="87"){
+                        jump();
+                        } 
+                        }
+                function jump(){
+                    myMove(fix);
+                }
+                function myMove(pos) {
+                    var a = 0;
+                    var elem = document.getElementById("game"); 
+                    var id = setInterval(frame, 15);
+                    function frame() {
+                        if(pos==33){
+                            a=1;
+                        }
+                        if (pos == 50 && a == 1) {
+                            clearInterval(id);
+                        } else {
+                            if(a==0){
+                                pos--;
+                            }
+                            else{
+                                pos++;
+                            } 
+                                elem.style.top = pos + "%";  
+                            }
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>

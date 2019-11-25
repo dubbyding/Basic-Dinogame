@@ -1,0 +1,119 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <div class="workspace">
+                <img src="try.jpg" class="imgs" style="height:50px; width:60px" id="game">
+                <img src="try.jpg" class="obs" style="height:50px; width:60px" id="obstacle">
+        </div>
+        <div class = "Sc">
+                <p id="sco">Dino</p>
+        </div>
+        <script>
+            var mov = 0;
+            var score=0;
+            var fix=50;
+            var t=0;
+            var x = 50;
+            var elem = document.getElementById("obstacle");
+            var pos = 60;
+            function check(){
+                if(pos<=29 && pos>=23){
+                    if(fix>=43&&fix<=50){
+                        t = 1;
+                        fix=50;
+                        pos=60;
+                        mov=0;
+                        x=60;
+                    }
+                    else{
+                        t=0;
+                    }
+                }
+            }
+            //obstacle move
+            function move(){
+                var ids = setInterval(frameobs, x);
+                function frameobs() {
+                    if(score%200 == 0){
+                    x=x-5;
+                    console.log(x);
+                }
+                    pos--;
+                    elem.style.left = pos + '%';
+                    if(pos<=19){
+                        pos=60;
+                    }
+                    check();
+                    if(t==1){
+                        clearInterval(ids);
+                    }
+                }
+            }
+            //player move
+            function jump() {
+                var a = 0;
+                var elem = document.getElementById("game"); 
+                var id = setInterval(frame, 15);
+                function frame() {
+                    if(fix==26){
+                        a=1;
+                    }
+                    if (t==1||(fix == 50 && a == 1)) {
+                        clearInterval(id);
+                    } else {
+                        if(a==0){
+                            fix--;
+                        }
+                        else{
+                            fix++;
+                        } 
+                            elem.style.top = fix + "%";  
+                        }
+                }
+            }
+                document.onkeydown = function(event){
+                    if(mov == 0){
+                        move();
+                        score = 0;
+                        playerScore();
+                        mov=1;
+                    }
+                    if(fix==50){
+                    if(t!=1){
+                        var key_press=String.fromCharCode(event.keyCode);
+                        var key_code=event.keyCode;
+                        if(key_code=="32"){ 
+                            jump();
+                        } 
+                    }else{
+                        fix = 50;
+                        pos = 60;
+                        var key_press=String.fromCharCode(event.keyCode);
+                        var key_code=event.keyCode;
+                        if(key_code=="32"){
+                            t = 0;
+                        jump();
+                        }
+                    
+                    
+                }
+                    }
+            }
+            function playerScore(){
+                if(t==1){
+                    clearInterval(i);
+                }else{
+                    var i = setInterval(Scoreadd,50);
+                }
+                function Scoreadd(){
+                    if(t!=1){
+                        score++;
+                    }
+                    document.getElementById("sco").innerHTML="score = "+score;
+                }
+            }
+        </script>
+    </body>
+</html>
